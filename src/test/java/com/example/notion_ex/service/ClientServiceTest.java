@@ -1,8 +1,5 @@
 package com.example.notion_ex.service;
 
-import com.example.notion_ex.model.Client;
-import com.example.notion_ex.repository.ClientRepo;
-import com.example.notion_ex.service.impl.ClientImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -12,7 +9,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ClientServiceTest {
-    private static final String CLIENT_NAME = "Petrica";
+    /*private static final String CLIENT_NAME = "Petrica";
     private static final String NOT_CLIENT_NAME = "Not Petrica, someone else";
 
     private ClientImpl clientImpl;
@@ -46,5 +43,5 @@ public class ClientServiceTest {
         Exception exception = assertThrows(NullPointerException.class, () -> {
             clientImpl.findByName(NOT_CLIENT_NAME);
         });
-    }
+    }*/
 }

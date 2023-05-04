@@ -1,50 +1,62 @@
 package com.example.notion_ex.service.impl;
 
-import com.example.notion_ex.model.Admin;
-import com.example.notion_ex.model.ReadActivity;
+import com.example.notion_ex.dto.ToDoActivityDTO;
+import com.example.notion_ex.mapper.ToDoActivityMapper;
+import com.example.notion_ex.model.ProjectActivity;
 import com.example.notion_ex.model.ToDoActivity;
-import com.example.notion_ex.repository.AdminRepo;
-import com.example.notion_ex.repository.ReadActivityRepo;
+import com.example.notion_ex.model.User;
 import com.example.notion_ex.repository.ToDoActivityRepo;
+import com.example.notion_ex.repository.UserRepo;
 import com.example.notion_ex.service.ToDoActivityService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ToDoActivityImpl implements ToDoActivityService {
-    @Autowired
-    private ToDoActivityRepo toDoActivityRepo;
+    private final ToDoActivityRepo toDoActivityRepo;
 
-    public ToDoActivityImpl(ToDoActivityRepo toDoActRepo) {
+    @Autowired
+    private final UserRepo userRepo;
+    private final ToDoActivityMapper toDoActivityMapper;
+
+    public ToDoActivityImpl(ToDoActivityRepo toDoActRepo, UserRepo userRepo, ToDoActivityMapper toDoActivityMapper) {
         this.toDoActivityRepo = toDoActRepo;
+        this.userRepo = userRepo;
+        this.toDoActivityMapper = toDoActivityMapper;
     }
+
     //READ
     @Override
-    public ToDoActivity getToDoActivityByID(Long id) {
-        return toDoActivityRepo.findById(id).orElse(null);
+    public ToDoActivityDTO findToDoByID(Long id) {
+        final ToDoActivity toDoActivity = toDoActivityRepo.findById(id).orElseThrow(
+                () ->  { throw new EntityNotFoundException("Cannot find To Do task with given Id"); }
+        );
+        return toDoActivityMapper.mapModelToDto(toDoActivity);
     }
 
     @Override
-    public ToDoActivity getFirstToDoByName(String name) {
-        return toDoActivityRepo.findFirstByTaskName(name);
+    public List<ToDoActivityDTO> findAllDTO() {
+        return toDoActivityRepo.findAll().stream().
+                map(ToDoActivityMapper::mapModelToDto).
+                collect(Collectors.toList());
     }
 
     //UPDATE
-
     @Override
-    public ToDoActivity updateToDo(ToDoActivity act) {
-        ToDoActivity existing = toDoActivityRepo.findById(act.getId()).orElse(null);
-        existing.setTaskName(act.getTaskName());
-        existing.setUser(act.getUser());
+    public ToDoActivity updateToDo(ToDoActivityDTO toDoActivityDTO) {
+        ToDoActivity toDoActivity = toDoActivityRepo.findById(toDoActivityDTO.getId()).get();
+        User user = userRepo.findById(toDoActivityDTO.getId()).get();
 
-        return toDoActivityRepo.save(existing);
+        return toDoActivityRepo.save(toDoActivity);
     }
 
     @Override
-    public String deleteToDoById(Long id) {
-        toDoActivityRepo.deleteById(id);
-        return "To Do activity with id: " + id + " was deleted from the database\n";
+    public void delete(Long id) {
+        ToDoActivity toDoActivity = toDoActivityRepo.findById(id).get();
+        toDoActivityRepo.delete(toDoActivity);
     }
 }

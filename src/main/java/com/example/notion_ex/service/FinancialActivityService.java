@@ -1,15 +1,26 @@
 package com.example.notion_ex.service;
 
+import com.example.notion_ex.dto.FinancialActivityDTO;
 import com.example.notion_ex.model.FinancialActivity;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public interface FinancialActivityService {
     //READ
-    FinancialActivity getActivity(Long id);
-    FinancialActivity findByExpense(String expense);
+    FinancialActivityDTO findFinancialByIDDTO(Long id);
+    List<FinancialActivityDTO> findAllDTO();
+    Optional<FinancialActivity> findByExpense(String expense);
+
     //UPDATE
-    FinancialActivity updateFinancial(FinancialActivity fActivity);
+    FinancialActivity updateFinancial(FinancialActivityDTO fActivityDTO);
+
     //DELETE
-    String deleteFinancialById(Long id);
+    void deleteFinancial(Long id);
+
+    //unused methods
+    FinancialActivity findFinancialActivityByID(Long id);
+    List<FinancialActivity> findAll();
 }

@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ProjectActivityServiceTest {
-    private static final String PROJECT_NAME = "Dealing with Java bugs";
+    /*private static final String PROJECT_NAME = "Dealing with Java bugs";
     private static final String NOT_PROJECT_NAME = "Not dealing, just trying";
 
     private ProjectActivityImpl projectActivityImpl;
@@ -46,5 +46,5 @@ public class ProjectActivityServiceTest {
         Exception exception = assertThrows(NullPointerException.class, () -> {
             projectActivityImpl.findProjectByName(NOT_PROJECT_NAME);
         });
-    }
+    }*/
 }

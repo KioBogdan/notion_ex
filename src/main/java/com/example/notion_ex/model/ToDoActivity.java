@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +22,9 @@ public class ToDoActivity /*extends People*/{
 
     private String taskName; // name of the task
     //@OneToMany
-    @Transient
-    private ArrayList<People> peopleAssigned; //people assigned to the task presented
-    private String due; //date of the expense
+    //@Transient
+    //private ArrayList<People> peopleAssigned; //people assigned to the task presented
+    private LocalDate due; //date of the expense
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User user;

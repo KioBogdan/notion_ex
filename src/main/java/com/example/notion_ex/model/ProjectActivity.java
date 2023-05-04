@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Entity
@@ -20,11 +21,11 @@ public class ProjectActivity {
 
     private String task; // name of task
     private String status; //status of completion for the present task
-    private String dateStart; //starting date of the project
-    private String dateFinish; //ending date of the project
+    private LocalDate dateStart; //starting date of the project
+    private LocalDate dateFinish; //ending date of the project
     private String projectName; //name of the project
-    @OneToMany
-    private ArrayList<People> peopleAssigned; //people assigned to the project
+    //@OneToMany
+    //private ArrayList<People> peopleAssigned; //people assigned to the project
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User user;

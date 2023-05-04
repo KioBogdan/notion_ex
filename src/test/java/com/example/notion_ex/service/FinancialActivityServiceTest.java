@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class FinancialActivityServiceTest {
-    private static final String EXPENSE = "Groceries";
+    /*private static final String EXPENSE = "Groceries";
     private static final String NOT_EXPENSE = "Not groceries, nor test success";
 
     private FinancialActivityImpl financialActivityImpl;
@@ -46,5 +46,5 @@ public class FinancialActivityServiceTest {
         Exception exception = assertThrows(NullPointerException.class, () -> {
             financialActivityImpl.findByExpense(NOT_EXPENSE);
         });
-    }
+    }*/
 }

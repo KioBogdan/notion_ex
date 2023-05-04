@@ -1,49 +1,80 @@
 package com.example.notion_ex.service.impl;
 
+import com.example.notion_ex.dto.FinancialActivityDTO;
+import com.example.notion_ex.mapper.FinancialActivityMapper;
 import com.example.notion_ex.model.FinancialActivity;
+import com.example.notion_ex.model.User;
 import com.example.notion_ex.repository.FinancialActivityRepo;
+import com.example.notion_ex.repository.UserRepo;
 import com.example.notion_ex.service.FinancialActivityService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class FinancialActivityImpl implements FinancialActivityService {
+    private final FinancialActivityRepo financialActivityRepo;
+
     @Autowired
-    private FinancialActivityRepo financialActivityRepo;
+    private final UserRepo userRepo;
 
-    public FinancialActivityImpl(FinancialActivityRepo finActRepo) {
+    private final FinancialActivityMapper financialActivityMapper;
+
+    public FinancialActivityImpl(FinancialActivityRepo finActRepo, UserRepo userRepo, FinancialActivityMapper financialActivityMapper) {
         this.financialActivityRepo = finActRepo;
+        this.userRepo = userRepo;
+        this.financialActivityMapper = financialActivityMapper;
     }
-
 
     //READ
     @Override
-    public FinancialActivity getActivity(Long id){
-        return financialActivityRepo.findById(id).orElse(null);
+    public FinancialActivity findFinancialActivityByID(Long id){ return financialActivityRepo.findById(id).orElse(null); }
+
+    @Override
+    public FinancialActivityDTO findFinancialByIDDTO(Long id) {
+        final FinancialActivity financialActivity = financialActivityRepo.findById(id).orElseThrow(
+                () ->  { throw new EntityNotFoundException("Cannot find financial task with given Id"); }
+        );
+        return financialActivityMapper.mapModelToDto(financialActivity);
     }
 
     @Override
-    public FinancialActivity findByExpense(String expense) {
-        return financialActivityRepo.findFirstByExpense(expense);
+    public List<FinancialActivityDTO> findAllDTO() {
+        return financialActivityRepo.findAll().stream()
+                .map(FinancialActivityMapper::mapModelToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FinancialActivity> findAll() {
+        return financialActivityRepo.findAll();
+    }
+
+    @Override
+    public Optional<FinancialActivity> findByExpense(String expense) {
+        return financialActivityRepo.findByExpense(expense);
     }
 
     //UPDATE
     @Override
-    public FinancialActivity updateFinancial(FinancialActivity fActivity) {
-        FinancialActivity existActivity = financialActivityRepo.findById(fActivity.getId()).orElse(null);
-        existActivity.setExpense(fActivity.getExpense());
-        existActivity.setAmount(fActivity.getAmount());
-        existActivity.setCategory(fActivity.getCategory());
-        //to be added: existActivity.setDate(fActivity.getDate());
-        //existingAdmin.;
+    public FinancialActivity updateFinancial(FinancialActivityDTO fActivityDTO) {
+        FinancialActivity financialActivity = financialActivityRepo.findById(fActivityDTO.getId()).get();
+        User user = userRepo.findById(fActivityDTO.getId()).get();
+        user.getFinancialActivityList().add(financialActivity);
 
-        return financialActivityRepo.save(existActivity);
+        return financialActivityRepo.save(financialActivity);
     }
 
     //DELETE
     @Override
-    public String deleteFinancialById(Long id) {
-        financialActivityRepo.deleteById(id);
-        return "The financial activity with id " + id + " was deleted from the database";
+    public void deleteFinancial(Long id) {
+        FinancialActivity financialActivity = financialActivityRepo.findById(id).get();
+        financialActivityRepo.delete(financialActivity);
+        //return financialActivity;
     }
+
 }

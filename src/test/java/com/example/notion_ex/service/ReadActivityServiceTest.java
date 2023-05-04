@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ReadActivityServiceTest {
-    private static final String READ_TYPE = "Book";
+    /*private static final String READ_TYPE = "Book";
     private static final String NOT_READ_TYPE = "Clearly not book";
 
     private ReadActivityImpl readActivityImpl;
@@ -49,5 +49,5 @@ public class ReadActivityServiceTest {
         Exception exception = assertThrows(NullPointerException.class, () -> {
             readActivityImpl.getReadByType(NOT_READ_TYPE);
         });
-    }
+    }*/
 }

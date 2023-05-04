@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParsePosition;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
@@ -23,9 +25,9 @@ public class FinancialActivity /*extends DateFormat*/ {
     private Long id;
 
     private String expense; // name of the expense
-    private int amount; //value of expense, based on Romanian leu
+    private int amount; //value of expense, based on Romanian Leu
     private String category; //way to categorize the expenses
-    private String date; //date of the expense
+    private LocalDate date; //date of the expense
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User user;
