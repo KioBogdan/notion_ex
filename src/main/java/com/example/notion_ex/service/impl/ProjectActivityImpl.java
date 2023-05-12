@@ -12,32 +12,24 @@ import com.example.notion_ex.repository.ProjectActivityRepo;
 import com.example.notion_ex.repository.UserRepo;
 import com.example.notion_ex.service.ProjectActivityService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProjectActivityImpl implements ProjectActivityService {
     private final ProjectActivityRepo projectActivityRepo;
-
-    @Autowired
     private final UserRepo userRepo;
-
-    @Autowired
-    private final PeopleRepo peopleRepo;
-
     private final ProjectActivityMapper projectActivityMapper;
-
-    public ProjectActivityImpl(ProjectActivityRepo prActRepo, UserRepo userRepo, ProjectActivityMapper projectActivityMapper, PeopleRepo peopleRepo) {
-        this.projectActivityRepo = prActRepo;
-        this.userRepo = userRepo;
-        this.projectActivityMapper = projectActivityMapper;
-        this.peopleRepo = peopleRepo;
-    }
 
     //READ
     @Override
@@ -58,6 +50,50 @@ public class ProjectActivityImpl implements ProjectActivityService {
         return projectActivityRepo.findAll().stream()
                 .map(ProjectActivityMapper::mapModelToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ProjectActivity saveProject(User user, ProjectActivity projectActivity) {
+        //ProjectActivity projectActivity = new ProjectActivity();
+        //projectActivity.setProjectName("This project lit");
+        projectActivity.setUser(user);
+
+        return projectActivityRepo.save(projectActivity);
+    }
+
+    @Override
+    public List<ProjectActivity> sortByParam(String param) {
+        return projectActivityRepo.findAll(Sort.by(Sort.Direction.ASC, param));
+    }
+
+    @Override
+    public Set<ProjectActivity> findByUser(User user) {
+        return projectActivityRepo.findByUserId(user.getId());
+    }
+
+    @Override
+    public List<ProjectActivity> findByTaskService(String t) {
+        return projectActivityRepo.findByTask(t);
+    }
+
+    @Override
+    public List<ProjectActivity> findByProjectNameService(String t) {
+        return projectActivityRepo.findByProjectName(t);
+    }
+
+    @Override
+    public List<ProjectActivity> findByStatusService(String t) {
+        return projectActivityRepo.findByStatus(t);
+    }
+
+    @Override
+    public List<ProjectActivity> findByDateStartService(LocalDate d) {
+        return projectActivityRepo.findByDateStart(d);
+    }
+
+    @Override
+    public List<ProjectActivity> findByDateFinishService(LocalDate d) {
+        return projectActivityRepo.findByDateFinish(d);
     }
 
     //UPDATE

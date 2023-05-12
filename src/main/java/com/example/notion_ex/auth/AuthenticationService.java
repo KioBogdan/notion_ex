@@ -1,13 +1,13 @@
 package com.example.notion_ex.auth;
 
 import com.example.notion_ex.config.JwtService;
+import com.example.notion_ex.model.User;
 import com.example.notion_ex.model.UserRole;
 import com.example.notion_ex.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +21,10 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        var user = com.example.notion_ex.model.User.builder()
+        var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
-                /*.username(request.getUsername())*/
+                .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .userRole(UserRole.CLIENT)

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useLocalState } from '../util/useLocalStorage';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {
     const [username, setUsername] = useState("");
@@ -12,11 +14,11 @@ const Login = () => {
              password: password,
         };
           
-        fetch("/api/auth/login", {
+        fetch("api/login", {
             headers: {
                 "Content-Type" : "application/json",
             }, 
-            method: "post",
+            method: "POST",
             body: JSON.stringify(reqBody),
             })
               .then((response) => {
@@ -27,7 +29,7 @@ const Login = () => {
               })
               .then(([body, headers]) => {
                 setJwt(headers.get("authorization")); //async operation; will not see the result just after it finishes
-                window.location.href = "dashboard";
+                window.location.href = "financial";
               })
               .catch((message) => {
                 alert(message);
@@ -35,29 +37,66 @@ const Login = () => {
     }
 
     return (
-        <>
-            <div>
-                <label htmlFor="email">Email</label>
-                <input type="email" 
-                       id="email" 
-                       value={username} 
-                       onChange={(event) => setUsername(event.target.value)}/>
-            </div>
-            <div>
-                <label htmlFor="password">Password</label>
-                <input type="password" 
-                       id="password" 
-                       value={password} 
-                       onChange={(event) => setPassword(event.target.value)}/>
-            </div>
-            <div>
-                <button id="submit" 
+    <>
+        <Container className='mt-5'>
+            <Row className='justify-content-center'>
+                <Col md="8" lg="6">
+                <Form.Group className="mb-3" controlId='username'>
+                    <Form.Label className='fs-5'>Email address</Form.Label>
+                    <Form.Control type="email" 
+                            value={username} 
+                            onChange={(event) => setUsername(event.target.value)} placeholder="Enter email"/>
+                </Form.Group>
+                </Col>
+            </Row>
+
+            <Row className='justify-content-center'>
+                <Col md="8" lg="6">
+                <Form.Group className="mb-3" controlId='password'>
+                    <Form.Label className='fs-5'>Password</Form.Label>
+                    <Form.Control type="password" 
+                            value={password} 
+                            onChange={(event) => setPassword(event.target.value)} placeholder="Type in your password"/>
+                </Form.Group>
+                </Col>
+            </Row>
+                {/* <Form.Group className="mb-3" controlId='username'>
+                    <Form.Label className='fs-5'>Email address</Form.Label>
+                    <Form.Control type="email" 
+                            value={username} 
+                            onChange={(event) => setUsername(event.target.value)} placeholder="Enter email"/>
+                </Form.Group> */}
+
+                {/* <Form.Group className="mb-3" controlId='password'>
+                    <Form.Label className='fs-5'>Password</Form.Label>
+                    <Form.Control type="password" 
+                            value={password} 
+                            onChange={(event) => setPassword(event.target.value)} placeholder="Type in your password"/>
+                </Form.Group> */}
+            {/* </Form> */}
+
+            <Row className='justify-content-center'>
+                <Col md="8" lg="6" className='mt-2 d-flex flex-column gap-3 flex-md-row justify-content-between'>
+                <Button id="submit" 
                         type="button" 
-                        onClick={() => sendLogReq()} >
+                        size='lg'
+                        onClick={() => sendLogReq()}
+                        variant="secondary" >
                     Login
-                </button>
-            </div>
-        </>
+                </Button>
+
+                <Button id="submit" 
+                        type="button" 
+                        size='lg'
+                        onClick={() => {window.location.href = "/"; }}
+                        variant="dark" >
+                    Exit
+                </Button>
+
+                </Col>
+            </Row>
+        </Container>
+    </>
     );
 };
 

@@ -1,5 +1,6 @@
 package com.example.notion_ex.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,8 @@ public class ReadActivity {
     private int score; //personal rating of the book, on a scale from 1 to 5
     private LocalDate dateOfCompletion;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private User user;
 
     //to be solved

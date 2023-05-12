@@ -3,10 +3,14 @@ import './App.css';
 import { Routes, Route } from "react-router-dom"
 import { useEffect } from 'react';
 import { useLocalState } from './util/useLocalStorage';
-import Dashboard from './Dashboard';
+import FinancialActivities from './FinancialActivities';
 import Homepage from './Homepage';
 import Login from './Login';
 import PrivateRoute from './PrivateRoute';
+import ProjectActivities from './ProjectActivities';
+import ReadActivities from './ReadActivities';
+import ToDoActivities from './ToDoActivities';
+import Register from './Register';
 
 function App() {
 
@@ -42,13 +46,38 @@ function App() {
   return (
     <Routes>
       <Route 
-        path="/dashboard" //wrap dashboard into PrivateRoute
+        path="/financial" //wrap dashboard into PrivateRoute
         element={
           <PrivateRoute>
-            <Dashboard />
+            <FinancialActivities />
           </PrivateRoute>
         }
       />
+      <Route 
+        path="/project" //wrap dashboard into PrivateRoute
+        element={
+          <PrivateRoute>
+            <ProjectActivities />
+          </PrivateRoute>
+        }
+      />
+      <Route 
+        path="/read" //wrap dashboard into PrivateRoute
+        element={
+          <PrivateRoute>
+            <ReadActivities />
+          </PrivateRoute>
+        }
+      />
+      <Route 
+        path="/todo" //wrap dashboard into PrivateRoute
+        element={
+          <PrivateRoute>
+            <ToDoActivities />
+          </PrivateRoute>
+        }
+      />
+      <Route path="/register" element={<Register/>} />
       <Route path="/login" element={<Login/>} />
       <Route path="/" element={<Homepage/>} />
     </Routes> 

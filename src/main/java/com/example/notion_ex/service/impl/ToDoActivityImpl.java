@@ -2,6 +2,7 @@ package com.example.notion_ex.service.impl;
 
 import com.example.notion_ex.dto.ToDoActivityDTO;
 import com.example.notion_ex.mapper.ToDoActivityMapper;
+import com.example.notion_ex.model.FinancialActivity;
 import com.example.notion_ex.model.ProjectActivity;
 import com.example.notion_ex.model.ToDoActivity;
 import com.example.notion_ex.model.User;
@@ -10,9 +11,11 @@ import com.example.notion_ex.repository.UserRepo;
 import com.example.notion_ex.service.ToDoActivityService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,6 +46,35 @@ public class ToDoActivityImpl implements ToDoActivityService {
         return toDoActivityRepo.findAll().stream().
                 map(ToDoActivityMapper::mapModelToDto).
                 collect(Collectors.toList());
+    }
+
+    @Override
+    public ToDoActivity saveToDo(User user, ToDoActivity toDoActivity) {
+        //ToDoActivity toDoActivity = new ToDoActivity();
+        //toDoActivity.setTaskName("task good my G");
+        toDoActivity.setUser(user);
+
+        return toDoActivityRepo.save(toDoActivity);
+    }
+
+    @Override
+    public List<ToDoActivity> sortByParam(String param) {
+        return toDoActivityRepo.findAll(Sort.by(Sort.Direction.ASC, param));
+    }
+
+    @Override
+    public Set<ToDoActivity> findByUser(User user) {
+        return toDoActivityRepo.findByUserId(user.getId());
+    }
+
+    @Override
+    public List<ToDoActivity> findByTaskNameService(String s) {
+        return toDoActivityRepo.findByTaskName(s);
+    }
+
+    @Override
+    public List<ToDoActivity> findByDueService(String s) {
+        return toDoActivityRepo.findByDue(s);
     }
 
     //UPDATE

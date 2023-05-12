@@ -55,46 +55,49 @@ public class NotionExApplication {
 			user1.setName("Costel");
 			clientRepo.save(user1);*/
 
-			ToDoActivity activity = new ToDoActivity();
-			activity.setTaskName("Must implement Java functions");
-			toDoActivityRepo.save(activity);
-
-			ToDoActivity activity1 = new ToDoActivity();
-			activity1.setId(2L);
-			activity1.setTaskName("This homework is due");
-			toDoActivityRepo.save(activity1);
-
-			FinancialActivity act = new FinancialActivity();
-			act.setExpense("Groceries");
-			act.setCategory("Must");
-			financialActivityRepo.save(act);
-
-			FinancialActivity act1 = new FinancialActivity();
-			act1.setExpense("Financial Course");
-			act1.setCategory("Must");
-			act1.setAmount(1000);
-			//act1.setUser(user1);
-			financialActivityRepo.save(act1);
-
-			FinancialActivity act2 = new FinancialActivity();
-			act2.setExpense("Weekend fun");
-			act2.setCategory("Probably");
-			act1.setAmount(250);
-			financialActivityRepo.save(act2);
-
-			System.out.println(financialActivityRepo.findByExpense(("Groceries")).get());
-
-			ProjectActivity prAct = new ProjectActivity();
-			prAct.setProjectName("Dealing with Java bugs");
-			projectTasksActivityRepo.save(prAct);
-
-			ProjectActivity prAct1 = new ProjectActivity();
-			prAct1.setProjectName("Assurance");
-			projectTasksActivityRepo.save(prAct1);
-
-			ReadActivity readAct = new ReadActivity();
-			readAct.setType("Book");
-			readBooksActivityRepo.save(readAct);
+//			ToDoActivity activity = new ToDoActivity();
+//			activity.setTaskName("Must implement Java functions");
+//			//activity.setUser(clientRef);
+//			toDoActivityRepo.save(activity);
+//
+//			ToDoActivity activity1 = new ToDoActivity();
+//			activity1.setId(2L);
+//			activity1.setTaskName("This homework is due");
+//			//activity1.setUser(clientRef);
+//			toDoActivityRepo.save(activity1);
+//
+//			FinancialActivity act = new FinancialActivity();
+//			act.setExpense("Groceries");
+//			act.setCategory("Must");
+//			//act.setUser(clientRef);
+//			financialActivityRepo.save(act);
+//
+//			FinancialActivity act1 = new FinancialActivity();
+//			act1.setExpense("Financial Course");
+//			act1.setCategory("Must");
+//			act1.setAmount(1000);
+//			//act1.setUser(user1);
+//			financialActivityRepo.save(act1);
+//
+//			FinancialActivity act2 = new FinancialActivity();
+//			act2.setExpense("Weekend fun");
+//			act2.setCategory("Probably");
+//			act1.setAmount(250);
+//			financialActivityRepo.save(act2);
+//
+//			System.out.println(financialActivityRepo.findByExpense(("Groceries")));
+//
+//			ProjectActivity prAct = new ProjectActivity();
+//			prAct.setProjectName("Dealing with Java bugs");
+//			projectTasksActivityRepo.save(prAct);
+//
+//			ProjectActivity prAct1 = new ProjectActivity();
+//			prAct1.setProjectName("Assurance");
+//			projectTasksActivityRepo.save(prAct1);
+//
+//			ReadActivity readAct = new ReadActivity();
+//			readAct.setType("Book");
+//			readBooksActivityRepo.save(readAct);
 
 
 		};

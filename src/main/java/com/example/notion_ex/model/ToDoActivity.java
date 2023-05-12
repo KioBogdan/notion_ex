@@ -1,5 +1,6 @@
 package com.example.notion_ex.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,8 @@ public class ToDoActivity /*extends People*/{
     //private ArrayList<People> peopleAssigned; //people assigned to the task presented
     private LocalDate due; //date of the expense
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private User user;
 
     //to be solved

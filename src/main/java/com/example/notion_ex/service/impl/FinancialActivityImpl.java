@@ -8,27 +8,26 @@ import com.example.notion_ex.repository.FinancialActivityRepo;
 import com.example.notion_ex.repository.UserRepo;
 import com.example.notion_ex.service.FinancialActivityService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class FinancialActivityImpl implements FinancialActivityService {
     private final FinancialActivityRepo financialActivityRepo;
-
-    @Autowired
-    private final UserRepo userRepo;
-
     private final FinancialActivityMapper financialActivityMapper;
-
-    public FinancialActivityImpl(FinancialActivityRepo finActRepo, UserRepo userRepo, FinancialActivityMapper financialActivityMapper) {
-        this.financialActivityRepo = finActRepo;
-        this.userRepo = userRepo;
-        this.financialActivityMapper = financialActivityMapper;
-    }
+    private final UserRepo userRepo;
 
     //READ
     @Override
@@ -50,13 +49,71 @@ public class FinancialActivityImpl implements FinancialActivityService {
     }
 
     @Override
+    public FinancialActivity saveFinancial(User user, FinancialActivity financialActivity) {
+        //FinancialActivity financialActivity = new FinancialActivity();
+        //financialActivity.setCategory("Dunno what this is");
+        financialActivity.setUser(user);
+
+        return financialActivityRepo.save(financialActivity);
+    }
+
+    @Override
+    public Set<FinancialActivity> findByUser(User user) { return financialActivityRepo.findByUserId(user.getId()); }
+
+    @Override
     public List<FinancialActivity> findAll() {
         return financialActivityRepo.findAll();
     }
 
     @Override
-    public Optional<FinancialActivity> findByExpense(String expense) {
+    public List<FinancialActivity> sortByParam(String param) {
+        return financialActivityRepo.findAll(Sort.by(Sort.Direction.ASC, param));
+    }
+
+    @Override
+    public List<FinancialActivity> findByExpenseService(String expense) {
         return financialActivityRepo.findByExpense(expense);
+    }
+
+    @Override
+    public List<FinancialActivity> findByAmountService(int amount) {
+        return financialActivityRepo.findByAmount(amount);
+    }
+
+    @Override
+    public List<FinancialActivity> findByCategoryService(String category) {
+        return financialActivityRepo.findByCategory(category);
+    }
+
+    @Override
+    public List<FinancialActivity> findByDateService(LocalDate date) {
+        return financialActivityRepo.findByDate(date);
+    }
+
+    @Override
+    public boolean isNumeric(String s) {
+            if (s == null) {
+                return false;
+            }
+            try {
+                double d = Double.parseDouble(s);
+            } catch (NumberFormatException nfe) {
+                return false;
+            }
+            return true;
+    }
+
+    @Override
+    public boolean isDate(String s) {
+        if (s == null) {
+            return false;
+        }
+        try {
+            LocalDate d = LocalDate.parse(s);
+        } catch (DateTimeException e) {
+            return false;
+        }
+        return true;
     }
 
     //UPDATE

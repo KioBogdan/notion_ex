@@ -1,5 +1,6 @@
 package com.example.notion_ex.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,14 +21,16 @@ public class ProjectActivity {
     private Long id;
 
     private String task; // name of task
+    private String projectName; //name of the project
     private String status; //status of completion for the present task
     private LocalDate dateStart; //starting date of the project
     private LocalDate dateFinish; //ending date of the project
-    private String projectName; //name of the project
+
     //@OneToMany
     //private ArrayList<People> peopleAssigned; //people assigned to the project
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private User user;
 
     //to be solved

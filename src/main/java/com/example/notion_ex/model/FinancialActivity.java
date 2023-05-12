@@ -1,5 +1,6 @@
 package com.example.notion_ex.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +30,8 @@ public class FinancialActivity /*extends DateFormat*/ {
     private String category; //way to categorize the expenses
     private LocalDate date; //date of the expense
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private User user;
 
     //to be solved
