@@ -1,5 +1,6 @@
 package com.example.notion_ex;
 
+import com.example.notion_ex.config.WebSocketConfig;
 import com.example.notion_ex.model.*;
 import com.example.notion_ex.repository.*;
 import com.example.notion_ex.service.FinancialActivityService;
@@ -10,10 +11,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @SpringBootApplication
 //@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 //@ComponentScan(basePackages = {"com.example.notion_ex"})
+@Import(WebSocketConfig.class)
+@CrossOrigin("https://localhost:3000")
 public class NotionExApplication {
 
 	public static void main(String[] args) {

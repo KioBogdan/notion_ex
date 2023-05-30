@@ -1,0 +1,21 @@
+<0>
+    <id>2</id>
+    <expense>dfgd</expense>
+    <amount>55</amount>
+    <category>Carrefour</category>
+    <date/>
+</0>
+<1>
+    <id>1</id>
+    <expense>dfgd</expense>
+    <amount>34</amount>
+    <category>fgd</category>
+    <date/>
+</1>
+<2>
+    <id>3</id>
+    <expense>ada</expense>
+    <amount>22</amount>
+    <category>beer</category>
+    <date/>
+</2>

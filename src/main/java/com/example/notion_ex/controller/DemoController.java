@@ -5,18 +5,23 @@ import com.example.notion_ex.auth.AuthenticationResponse;
 import com.example.notion_ex.auth.AuthenticationService;
 import com.example.notion_ex.auth.RegisterRequest;
 import com.example.notion_ex.config.JwtService;
+import com.example.notion_ex.dto.FinancialActivityDTO;
 import com.example.notion_ex.model.User;
+import com.example.notion_ex.service.FinancialActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api")
@@ -26,6 +31,7 @@ public class DemoController {
 
     private final AuthenticationManager authenticationManager;
     private final AuthenticationService authenticationService;
+    private final FinancialActivityService financialActivityService;
     private final JwtService jwtUtil;
 
     @GetMapping
@@ -66,5 +72,11 @@ public class DemoController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
+    }
+
+    //@CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(value = "/xml", produces = MediaType.APPLICATION_XML_VALUE)
+    public List<FinancialActivityDTO> getXmlData() {
+        return financialActivityService.findAllDTO();
     }
 }

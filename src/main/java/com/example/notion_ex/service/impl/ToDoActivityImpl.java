@@ -2,10 +2,7 @@ package com.example.notion_ex.service.impl;
 
 import com.example.notion_ex.dto.ToDoActivityDTO;
 import com.example.notion_ex.mapper.ToDoActivityMapper;
-import com.example.notion_ex.model.FinancialActivity;
-import com.example.notion_ex.model.ProjectActivity;
-import com.example.notion_ex.model.ToDoActivity;
-import com.example.notion_ex.model.User;
+import com.example.notion_ex.model.*;
 import com.example.notion_ex.repository.ToDoActivityRepo;
 import com.example.notion_ex.repository.UserRepo;
 import com.example.notion_ex.service.ToDoActivityService;
@@ -50,8 +47,6 @@ public class ToDoActivityImpl implements ToDoActivityService {
 
     @Override
     public ToDoActivity saveToDo(User user, ToDoActivity toDoActivity) {
-        //ToDoActivity toDoActivity = new ToDoActivity();
-        //toDoActivity.setTaskName("task good my G");
         toDoActivity.setUser(user);
 
         return toDoActivityRepo.save(toDoActivity);
@@ -64,31 +59,49 @@ public class ToDoActivityImpl implements ToDoActivityService {
 
     @Override
     public Set<ToDoActivity> findByUser(User user) {
-        return toDoActivityRepo.findByUserId(user.getId());
+        Set<ToDoActivity> todos = toDoActivityRepo.findByUserId(user.getId());
+        if(todos.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any todos by user. Check the given user");
+        }
+        else return todos;
     }
 
     @Override
     public List<ToDoActivity> findByTaskNameService(String s) {
-        return toDoActivityRepo.findByTaskName(s);
+        List<ToDoActivity> todos = toDoActivityRepo.findByTaskName(s);
+        if(todos.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any todos by task name. Check the given task name");
+        }
+        else return todos;
     }
 
     @Override
     public List<ToDoActivity> findByDueService(String s) {
-        return toDoActivityRepo.findByDue(s);
+        List<ToDoActivity> todos = toDoActivityRepo.findByDue(s);
+        if(todos.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any todos by due. Check the given due");
+        }
+        else return todos;
     }
 
     //UPDATE
     @Override
     public ToDoActivity updateToDo(ToDoActivityDTO toDoActivityDTO) {
-        ToDoActivity toDoActivity = toDoActivityRepo.findById(toDoActivityDTO.getId()).get();
-        User user = userRepo.findById(toDoActivityDTO.getId()).get();
+        ToDoActivity toDoActivity = toDoActivityRepo.findById(toDoActivityDTO.getId()).orElseThrow(
+                () -> { throw new EntityNotFoundException("Cannot find todo task with given Id"); }
+        );
+        User user = userRepo.findById(toDoActivityDTO.getId()).orElseThrow(
+                () -> { throw new EntityNotFoundException("Cannot find user for todo Id"); }
+        );
 
         return toDoActivityRepo.save(toDoActivity);
     }
 
     @Override
     public void delete(Long id) {
-        ToDoActivity toDoActivity = toDoActivityRepo.findById(id).get();
+        ToDoActivity toDoActivity = toDoActivityRepo.findById(id).orElseThrow(
+                () -> { throw new EntityNotFoundException("Cannot find todo task with given Id"); }
+        );
         toDoActivityRepo.delete(toDoActivity);
     }
 }

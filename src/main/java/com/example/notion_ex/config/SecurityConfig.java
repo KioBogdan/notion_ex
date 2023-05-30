@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/**", "/api/financial/sort/**", "api/read/sort/**", "api/project/sort/**",
                         "api/todo/sort/**", "api/financial/search/**", "api/project/search/**", "api/read/search/**",
-                        "api/todo/search/**")
+                        "api/todo/search/**", "api/register", "api/xml")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

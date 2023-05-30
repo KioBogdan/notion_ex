@@ -11,6 +11,11 @@ import ProjectActivities from './ProjectActivities';
 import ReadActivities from './ReadActivities';
 import ToDoActivities from './ToDoActivities';
 import Register from './Register';
+import MyComponent from './MainComponent';
+import WebSockets from './MainComponent';
+import MainComponent from './MainComponent';
+import ChildComponent from './ChildComponent';
+
 
 function App() {
 
@@ -79,7 +84,8 @@ function App() {
       />
       <Route path="/register" element={<Register/>} />
       <Route path="/login" element={<Login/>} />
-      <Route path="/" element={<Homepage/>} />
+      <Route path="/xml" element={<ChildComponent/>} />
+      <Route path="/" element={<MyComponent/>} />
     </Routes> 
   );
 }

@@ -3,10 +3,7 @@ package com.example.notion_ex.service.impl;
 import com.example.notion_ex.dto.ProjectActivityDTO;
 import com.example.notion_ex.mapper.FinancialActivityMapper;
 import com.example.notion_ex.mapper.ProjectActivityMapper;
-import com.example.notion_ex.model.FinancialActivity;
-import com.example.notion_ex.model.People;
-import com.example.notion_ex.model.ProjectActivity;
-import com.example.notion_ex.model.User;
+import com.example.notion_ex.model.*;
 import com.example.notion_ex.repository.PeopleRepo;
 import com.example.notion_ex.repository.ProjectActivityRepo;
 import com.example.notion_ex.repository.UserRepo;
@@ -68,39 +65,67 @@ public class ProjectActivityImpl implements ProjectActivityService {
 
     @Override
     public Set<ProjectActivity> findByUser(User user) {
-        return projectActivityRepo.findByUserId(user.getId());
+        Set<ProjectActivity> projects = projectActivityRepo.findByUserId(user.getId());
+        if(projects.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any projects by user. Check the given user");
+        }
+        else return projects;
     }
 
     @Override
     public List<ProjectActivity> findByTaskService(String t) {
-        return projectActivityRepo.findByTask(t);
+        List<ProjectActivity> projects = projectActivityRepo.findByTask(t);
+        if(projects.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any projects by task. Check the given task");
+        }
+        else return projects;
     }
 
     @Override
     public List<ProjectActivity> findByProjectNameService(String t) {
-        return projectActivityRepo.findByProjectName(t);
+        List<ProjectActivity> projects = projectActivityRepo.findByProjectName(t);
+        if(projects.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any projects by project name. Check the given project name");
+        }
+        else return projects;
     }
 
     @Override
     public List<ProjectActivity> findByStatusService(String t) {
-        return projectActivityRepo.findByStatus(t);
+        List<ProjectActivity> projects = projectActivityRepo.findByStatus(t);
+        if(projects.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any projects by status. Check the given status");
+        }
+        else return projects;
     }
 
     @Override
     public List<ProjectActivity> findByDateStartService(LocalDate d) {
-        return projectActivityRepo.findByDateStart(d);
+        List<ProjectActivity> projects = projectActivityRepo.findByDateStart(d);
+        if(projects.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any projects by starting date. Check the given starting date");
+        }
+        else return projects;
     }
 
     @Override
     public List<ProjectActivity> findByDateFinishService(LocalDate d) {
-        return projectActivityRepo.findByDateFinish(d);
+        List<ProjectActivity> projects = projectActivityRepo.findByDateFinish(d);
+        if(projects.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any projects by ending date. Check the given ending date");
+        }
+        else return projects;
     }
 
     //UPDATE
     @Override
     public ProjectActivity updateProject(ProjectActivityDTO projectActivityDTO) {
-        ProjectActivity projectActivity = projectActivityRepo.findById(projectActivityDTO.getId()).get();
-        User user = userRepo.findById(projectActivityDTO.getId()).get();
+        ProjectActivity projectActivity = projectActivityRepo.findById(projectActivityDTO.getId()).orElseThrow(
+                () -> { throw new EntityNotFoundException("Cannot find project task with given Id"); }
+        );
+        User user = userRepo.findById(projectActivityDTO.getId()).orElseThrow(
+                () -> { throw new EntityNotFoundException("Cannot find user for project Id"); }
+        );
         //People peopleAttr = (People) peopleRepo.findAllById(Collections.singleton(projectActivityDTO.getId()));
         //user.getProjectActivityList().add(projectActivity);
 
@@ -110,7 +135,9 @@ public class ProjectActivityImpl implements ProjectActivityService {
     //DELETE
     @Override
     public void deleteProjectActivityById(Long id) {
-        ProjectActivity projectActivity = projectActivityRepo.findById(id).get();
+        ProjectActivity projectActivity = projectActivityRepo.findById(id).orElseThrow(
+                () -> { throw new EntityNotFoundException("Cannot find project task with given Id"); }
+        );
         projectActivityRepo.delete(projectActivity);
     }
 }

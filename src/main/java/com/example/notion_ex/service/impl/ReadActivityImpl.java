@@ -64,37 +64,65 @@ public class ReadActivityImpl implements ReadActivityService {
 
     @Override
     public Set<ReadActivity> findByUser(User user) {
-        return readActivityRepo.findByUserId(user.getId());
+        Set<ReadActivity> reads = readActivityRepo.findByUserId(user.getId());
+        if(reads.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any reads by user. Check the given user");
+        }
+        else return reads;
     }
 
     @Override
     public List<ReadActivity> findByNameService(String t) {
-        return readActivityRepo.findByName(t);
+        List<ReadActivity> reads = readActivityRepo.findByName(t);
+        if(reads.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any reads by name. Check the given name");
+        }
+        else return reads;
     }
 
     @Override
     public List<ReadActivity> findByAuthorService(String t) {
-        return readActivityRepo.findByAuthor(t);
+        List<ReadActivity> reads = readActivityRepo.findByAuthor(t);
+        if(reads.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any reads by author. Check the given name");
+        }
+        else return reads;
     }
 
     @Override
     public List<ReadActivity> findByTypeService(String t) {
-        return readActivityRepo.findByType(t);
+        List<ReadActivity> reads = readActivityRepo.findByType(t);
+        if(reads.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any reads by type. Check the given type");
+        }
+        else return reads;
     }
 
     @Override
     public List<ReadActivity> findByStatusService(String t) {
-        return readActivityRepo.findByStatus(t);
+        List<ReadActivity> reads = readActivityRepo.findByStatus(t);
+        if(reads.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any reads by status. Check the given status");
+        }
+        else return reads;
     }
 
     @Override
     public List<ReadActivity> findByScoreService(int t) {
-        return readActivityRepo.findByScore(t);
+        List<ReadActivity> reads = readActivityRepo.findByScore(t);
+        if(reads.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any reads by score. Check the given score");
+        }
+        else return reads;
     }
 
     @Override
     public List<ReadActivity> findByDateOfCompletionService(String t) {
-        return readActivityRepo.findByDateOfCompletion(t);
+        List<ReadActivity> reads = readActivityRepo.findByDateOfCompletion(t);
+        if(reads.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any reads by date. Check the given date");
+        }
+        else return reads;
     }
 
     @Override
@@ -127,15 +155,21 @@ public class ReadActivityImpl implements ReadActivityService {
 
     @Override
     public ReadActivity updateRead(ReadActivityDTO readActivityDTO) {
-        ReadActivity readActivity = readActivityRepo.findById(readActivityDTO.getId()).get();
-        User user = userRepo.findById(readActivityDTO.getId()).get();
+        ReadActivity readActivity = readActivityRepo.findById(readActivityDTO.getId()).orElseThrow(
+                () -> { throw new EntityNotFoundException("Cannot find read task with given Id"); }
+        );
+        User user = userRepo.findById(readActivityDTO.getId()).orElseThrow(
+                () -> { throw new EntityNotFoundException("Cannot find user for read activity Id");}
+        );
 
         return readActivityRepo.save(readActivity);
     }
 
     @Override
     public void delete(Long id) {
-        ReadActivity readActivity = readActivityRepo.findById(id).get();
+        ReadActivity readActivity = readActivityRepo.findById(id).orElseThrow(
+                () -> { throw new EntityNotFoundException("Cannot find read task with given Id"); }
+        );
         readActivityRepo.delete(readActivity);
     }
 }

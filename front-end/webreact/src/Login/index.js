@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useLocalState } from '../util/useLocalStorage';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import MyComponent from '../MainComponent';
 
 const Login = () => {
     const [username, setUsername] = useState("");
@@ -88,6 +89,7 @@ const Login = () => {
                 <Button id="submit" 
                         type="button" 
                         size='lg'
+                        // onClick={() => {console.log("answer"); }}
                         onClick={() => {window.location.href = "/"; }}
                         variant="dark" >
                     Exit
@@ -101,3 +103,4 @@ const Login = () => {
 };
 
 export default Login;
+

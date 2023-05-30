@@ -3,6 +3,7 @@ package com.example.notion_ex.service.impl;
 import com.example.notion_ex.dto.FinancialActivityDTO;
 import com.example.notion_ex.mapper.FinancialActivityMapper;
 import com.example.notion_ex.model.FinancialActivity;
+import com.example.notion_ex.model.ToDoActivity;
 import com.example.notion_ex.model.User;
 import com.example.notion_ex.repository.FinancialActivityRepo;
 import com.example.notion_ex.repository.UserRepo;
@@ -58,7 +59,13 @@ public class FinancialActivityImpl implements FinancialActivityService {
     }
 
     @Override
-    public Set<FinancialActivity> findByUser(User user) { return financialActivityRepo.findByUserId(user.getId()); }
+    public Set<FinancialActivity> findByUser(User user) {
+        Set<FinancialActivity> financials = financialActivityRepo.findByUserId(user.getId());
+        if(financials.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any financials by user. Check the given user");
+        }
+        else return financials;
+    }
 
     @Override
     public List<FinancialActivity> findAll() {
@@ -72,22 +79,38 @@ public class FinancialActivityImpl implements FinancialActivityService {
 
     @Override
     public List<FinancialActivity> findByExpenseService(String expense) {
-        return financialActivityRepo.findByExpense(expense);
+        List<FinancialActivity> financials = financialActivityRepo.findByExpense(expense);
+        if(financials.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any financials by expense. Check the given expense");
+        }
+        else return financials;
     }
 
     @Override
     public List<FinancialActivity> findByAmountService(int amount) {
-        return financialActivityRepo.findByAmount(amount);
+        List<FinancialActivity> financials = financialActivityRepo.findByAmount(amount);
+        if(financials.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any financials by amount. Check the given amount");
+        }
+        else return financials;
     }
 
     @Override
     public List<FinancialActivity> findByCategoryService(String category) {
-        return financialActivityRepo.findByCategory(category);
+        List<FinancialActivity> financials = financialActivityRepo.findByCategory(category);
+        if(financials.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any financials by category. Check the given category");
+        }
+        else return financials;
     }
 
     @Override
     public List<FinancialActivity> findByDateService(LocalDate date) {
-        return financialActivityRepo.findByDate(date);
+        List<FinancialActivity> financials = financialActivityRepo.findByDate(date);
+        if(financials.isEmpty()) {
+            throw new ArrayStoreException("Cannot find any financials by date. Check the given date");
+        }
+        else return financials;
     }
 
     @Override
@@ -119,8 +142,12 @@ public class FinancialActivityImpl implements FinancialActivityService {
     //UPDATE
     @Override
     public FinancialActivity updateFinancial(FinancialActivityDTO fActivityDTO) {
-        FinancialActivity financialActivity = financialActivityRepo.findById(fActivityDTO.getId()).get();
-        User user = userRepo.findById(fActivityDTO.getId()).get();
+        FinancialActivity financialActivity = financialActivityRepo.findById(fActivityDTO.getId()).orElseThrow(
+                () -> { throw new EntityNotFoundException("Cannot find financial task with given Id"); }
+        );
+        User user = userRepo.findById(fActivityDTO.getId()).orElseThrow(
+                () -> { throw new EntityNotFoundException("Cannot find user for financial Id"); }
+        );
         user.getFinancialActivityList().add(financialActivity);
 
         return financialActivityRepo.save(financialActivity);
@@ -129,7 +156,9 @@ public class FinancialActivityImpl implements FinancialActivityService {
     //DELETE
     @Override
     public void deleteFinancial(Long id) {
-        FinancialActivity financialActivity = financialActivityRepo.findById(id).get();
+        FinancialActivity financialActivity = financialActivityRepo.findById(id).orElseThrow(
+                () -> { throw new EntityNotFoundException("Cannot find read task with given Id"); }
+        );
         financialActivityRepo.delete(financialActivity);
         //return financialActivity;
     }
